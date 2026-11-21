@@ -1,0 +1,33 @@
+name: Update Discord player count
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # GitHub's minimum; runs are often a few minutes late
+  workflow_dispatch:
+    inputs:
+      create_message:
+        description: 'Post the webhook message once (prints DISCORD_MESSAGE_ID)'
+        type: boolean
+        default: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/run.js ${{ inputs.create_message && '--create-message' || '' }}
+        env:
+          SERVER_HOST: ${{ vars.SERVER_HOST }}
+          SERVER_QUERY_PORT: ${{ vars.SERVER_QUERY_PORT }}
+          BATTLEMETRICS_ID: ${{ vars.BATTLEMETRICS_ID }}
+          CHANNEL_NAME_ONLINE: ${{ vars.CHANNEL_NAME_ONLINE }}
+          CHANNEL_NAME_OFFLINE: ${{ vars.CHANNEL_NAME_OFFLINE }}
+          EMBED_TITLE: ${{ vars.EMBED_TITLE }}
+          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}
+          DISCORD_MESSAGE_ID: ${{ vars.DISCORD_MESSAGE_ID }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

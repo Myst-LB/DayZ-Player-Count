@@ -1,0 +1,13 @@
+{
+  "name": "dayz-player-count",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Show a DayZ server's player count in Discord without a VPS (Vercel or GitHub Actions).",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "update": "node scripts/run.js",
+    "create-message": "node scripts/run.js --create-message",
+    "test": "node --test test/*.test.js"
+  }
+}
